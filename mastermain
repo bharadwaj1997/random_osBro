@@ -1,48 +1,5 @@
 
-Conversation opened. 2 messages. 1 message unread.
 
-Skip to content
-Using Gmail with screen readers
- 
- 
-More 
-1 of 185
- 
-(no subject)
-Inbox
-	x
-Sami Ullah		7:47 PM (2 minutes ago)
-​ main.cpp ​​ Makefile ​
-Sami Ullah <sami.ullah2316@gmail.com>
-	
-Attachments7:49 PM (0 minutes ago)
-		
-to me
-On Thu, May 28, 2015 at 7:47 PM, Sami Ullah <sami.ullah2316@gmail.com> wrote:
-
-    ​
-     main.cpp
-    ​​
-     Makefile
-    ​
-
-3 Attachments
-Preview attachment main.cpp
-[C++]
-Preview attachment main.cpp
-[C++]
-Preview attachment Makefile
-[Binary File]
-	
-Click here to Reply or Forward
-0.89 GB (5%) of 15 GB used
-Manage
-Terms - Privacy
-Last account activity: 0 minutes ago
-Open in 2 other locations  Details
-	
-	
-main.cpp
 
 #include <broker/broker.hh>
 #include <broker/endpoint.hh>
