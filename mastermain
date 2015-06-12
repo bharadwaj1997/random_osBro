@@ -8,14 +8,10 @@
 #include <iostream>
 #include <unistd.h>
 
-#include <osquery/sdk.h>
-
-using namespace osquery;
-
 int main()
 {
     // Prints welcome message...
-   /* int rv;
+   // int rv;
     std::cout << "Welcome ..." ;
     broker::init();
     broker::endpoint pc1("VM");
@@ -50,25 +46,7 @@ int main()
             std::cout<<"Error Sorry";
         }
     }
-   //while(true)
-    {
-       
-    }
-   /*  rv=poll(&pfd, 1, 10000);
-    if (rv == -1)
-    {
-        std::cout<< "Error..\n";
-    }
-    else if (rv == 0)
-    {
-    std::cout<<"Timeout occurred!  No data after 3.5 seconds.\n";
-    } 
-    else
-    {
-    for (auto& msg : mq.want_pop() )
-    {
-        std::cout << broker::to_string(msg);
-    }*/
+  
     
     return 0;
 }
