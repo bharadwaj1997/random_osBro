@@ -1,0 +1,6 @@
+table_name("new_etc_files")
+schema([
+    Column("path", TEXT),
+    Column("time", TEXT),
+])
+implementation("new_etc_files@NewETCFilesEventSubscriber::genTable")
