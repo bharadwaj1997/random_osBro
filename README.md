@@ -1,7 +1,7 @@
 ###Guide###
 For these file to work you should have cloned osquery from github and working build with `make` command. Then follow 
 the steps given below:
-* Item `1st` step is copy the `new_etc_file.table` to the `<osquery/tables/specs/>` directory. It will add new table with columns given in the .table file. At this step you can build osquery with `make && make install` and then check your table in osqueryi shell with .table command to list you table.
+* `1st` step is copying the `new_etc_file.table` to the `<osquery/tables/specs/>` directory. It will add new table with columns given in the .table file. At this step you can build osquery with `make && make install` and then check your table in osqueryi shell with .table command to list you table.
 * Copy  `new_etc_files.cpp`  in `<osquery/tables/events/linux/>`  directory. This file contain the functionality implementation with eventing framework for our table. 
 * Copy the `CMakeList.txt` in  `<osquery/tables/>` and then build osquery again. In `CMakeList.txt`, we have added link to broker library.
 * Up to this point, our table with its implementation is ready. Now you need to run osqueryd for scheduling your query, but before that make configuration file for `osqueryd`. Goto `</var/osquery/>` and then copy the osquery.conf in that directory.
