@@ -10,7 +10,7 @@
 #include <osquery/database.h>
 #include <osquery/tables.h>
 #include <osquery/sdk.h>
-#include "/home/chenone2316/osquery/osquery/events/linux/inotify.h"
+#include <osquery/events/linux/inotify.h>
 //////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////
