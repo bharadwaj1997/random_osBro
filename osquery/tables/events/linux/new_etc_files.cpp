@@ -1,11 +1,11 @@
 ////////////Broker Headers///////////////////////
-#include <broker/broker.hh>
+/*#include <broker/broker.hh>
 #include <broker/endpoint.hh>
 #include <broker/message_queue.hh>
 #include <poll.h>
 #include <iostream>
 #include <unistd.h>
-#include <iostream>
+#include <iostream>*/
 ////////////Osquery Headers///////////////////////
 #include <osquery/database.h>
 #include <osquery/tables.h>
@@ -25,7 +25,7 @@ class NewETCFilesEventSubscriber  : public EventSubscriber<INotifyEventPublisher
   // Implement the pure virtual init interface.
   Status init()
   {
-    broker::init();
+   /* broker::init();
     pc1.listen(9999,"192.168.1.187"); //own IP
     auto conn_status = pc1.incoming_connection_status().need_pop();
     for(auto cs : conn_status)
@@ -34,7 +34,7 @@ class NewETCFilesEventSubscriber  : public EventSubscriber<INotifyEventPublisher
         { 
             break;
         }
-   }
+   }*/
         ///////////////////////////////////////////////////
     auto sc = createSubscriptionContext();
     sc->path = "/etc";
@@ -46,7 +46,7 @@ class NewETCFilesEventSubscriber  : public EventSubscriber<INotifyEventPublisher
    }
   Status Callback(const INotifyEventContextRef& ec, const void* user_data)
    {
-   pc1.send("Testing",broker::message{broker::to_string(ec->path),broker::to_string(ec->time_string)});
+   //pc1.send("Testing",broker::message{broker::to_string(ec->path),broker::to_string(ec->time_string)});
    Row r;
    r["path"] = ec->path;
    r["time"] = ec->time_string;
