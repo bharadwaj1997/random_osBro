@@ -1,53 +1,75 @@
 
+#include <broker/message.hh>
 
 
+#include <broker/address.hh>
+
+#include <cstdlib>
 #include <broker/broker.hh>
 #include <broker/endpoint.hh>
 #include <broker/message_queue.hh>
 #include <poll.h>
 #include <iostream>
+#include <cstring>
 #include <unistd.h>
-
-int main()
+/*
+ * 
+ */
+using namespace std;
+int main() 
 {
-    // Prints welcome message...
-   // int rv;
-    std::cout << "Welcome ..." ;
     broker::init();
-    broker::endpoint pc1("VM");
-    pc1.listen(9999,"192.168.1.187");
-  //  broker::endpoint pc2("VM");
-   // pc2.peer("192.168.1.90",9999);
-  //  broker::message_queue mq("Testing",pc2);
- //   pollfd pfd{mq.fd() ,POLLIN, 0};
-    auto conn_status = pc1.incoming_connection_status().need_pop();
-    for(auto cs : conn_status)
-   {
+    broker::endpoint pc2("Printer");
+    pc2.listen(9999,"");
+   // broker::endpoint pc1("Testing");
+   // pc1.peer("192.168.1.187",8080);
+    
+    std::cout<<"Listing"<<std::endl;
+    auto conn_status = pc2.incoming_connection_status().need_pop();
+    std::cout<<"Out of Pop function"<<std::endl;
+    for (auto cs : conn_status)
+    {
         if(cs.status == broker::incoming_connection_status::tag::established)
         {
-            std::cout<<"Connection Established\n";
-            for(int i=0;i<5;i++)
-            {
-               try
-                {
-                     int x=11;
-                    pc1.send("Testing",broker::message{"hi",45,x});
-                }
-               catch (...)
-                {   
-                    std::cout<<"Encountered ANd Error";
-                    return 0;
-                }
-                usleep(1000000);
-            }
+            std::cout<< "Connection Established"<<std::endl;
+            usleep(500000);
+            pc2.send("Testing",broker::message{"SELECT * FROM time"});
+            usleep(500000);
         }
         else
         {
-            std::cout<<"Error Sorry";
+            std::cout<<"Connection could not Establish"<<std::endl;
         }
     }
-  
     
+    broker::message_queue mq("Testing",pc2);
+    pollfd pfd{mq.fd() ,POLLIN, 0};
+    
+    int rv;
+    while(true)
+    {
+    rv=poll(&pfd, 1, 10000);
+    if (rv == -1)
+    {
+        std::cout<< "Error..\n";
+    }
+    else if (rv == 0)
+    {
+    std::cout<<"Timeout occurred!  No data after 3.5 seconds.\n";
+    } 
+    else
+    {
+     for (auto& msg : mq.need_pop() )
+     {
+       std::string broker_msg = broker::to_string(msg);
+       if(broker_msg.size()>2)
+       {
+        broker_msg = broker_msg.substr(1,broker_msg.size()-2);
+        std::cout << broker::to_string(broker_msg)<<std::endl;
+       }
+     }
+    }
+    }
     return 0;
+    
 }
-
