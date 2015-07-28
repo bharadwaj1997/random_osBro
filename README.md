@@ -15,9 +15,9 @@ the steps given below:
 I have used the external builder to build the project. I have used `netbeans` but you may use any, at your ease like `gcc`, to build the code.  But you need to link `-std=c++11 -lbroker` at master side and `clang++ -std=c++11 -I/usr/local/include/ -losquery -lthrift -lboost_system -lboost_thread-mt -lboost_filesystem -lglog -lrocksdb -lbroker` at client side.
 
 ####Steps to Follow####
-1- First compile  `clientmain.cpp` and `mastermain.cpp` at two different PCs.
-2- Run `osqueryd` at client side.
-3- Run master program first (to set it to listen connections) and then client program: you will see the query results.
+* First compile  `clientmain.cpp` and `mastermain.cpp` at two different PCs.
+* Run `osqueryd` at client side.
+* Run master program first (to set it to listen connections) and then client program: you will see the query results.
 #### Notes: make sure port 9999 is open (firewall settings). ####
 
  ####Code Working Steps####
