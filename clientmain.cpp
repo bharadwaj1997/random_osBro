@@ -40,18 +40,6 @@ private:
 public:
     ////////////////////////////////////////////////////////////////////////////
     //////////////////broker connection/////////////////////////////////////////
-    Status setUp()
-    {
-        std::cout<<"In the setUp function"<<std::endl;
-      /*  auto status = brokerConnection();
-        while(!status.ok())
-        {
-            status = brokerConnection();
-        }
-        
-        brokerMessageQuery();*/
-        return Status(0,"OK");
-    }
     Status brokerConnection()
     {
         auto status = Status(0,"OK");
@@ -75,12 +63,7 @@ public:
     }
     ////////////////////////////////////////////////////////////////////////////
     
-   /* Status closeBrokerConnection()
-    {
-        auto status = Status(0,"OK");
-        return status;
-    }
-    */
+   
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
     std::string brokerMessageExtractor(const broker::message &msg)
@@ -126,14 +109,7 @@ public:
                         PC.send("Testing", broker::message{out});
                         usleep(500000);
                     }
-                  //  status = brokerQuery(temp_query, bQresult);
-                 /*   if(status.ok())
-                    {
-                        for(int i=0;i<bQresult.size();i++)
-                        {
-                            std::cout<<bQresult.data()<<std::endl;
-                        }
-                    }*/
+                  
                 }
             }
         }
@@ -142,39 +118,13 @@ public:
     
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-   /* Status brokerQuery(const std::string& manager_path, const std::string& queryString, QueryData& b_result)
-    {
-        auto status = extensionPathActive(manager_path);
-        if(!status.ok())
-        {
-            return status;
-        }
-        ExtensionResponse response;
-        try
-        {
-            auto client = EXManagerClient(manager_path);
-            client.get()->query(response,queryString);
-        }
-        catch (const std::exception& e)
-        {
-            return Status(1,"Extension call failed: " + std::string(e.what()));
-        }
-        for(const auto& row : response.response)
-        {
-            b_result.push_back(row);
-        }
-    }*/
+   
     QueryData brokerQuery(const std::string& queryString)
     {
         QueryData qd;
-      //  auto status = brokerQuery(FLAGS_extensions_socket,queryString,&qd);
         osquery::queryExternal(queryString, qd);
         
-        /*if(!status.ok())
-        {
-            std::cout<<status<<std::endl;
-        }*/
-        
+                
         return qd;
     }
     
@@ -182,6 +132,16 @@ public:
     //*************************************************************************
         Status genConfig(std::map<std::string,std::string>& config)
         {
+            return Status(0,"OK");
+        }
+        Status genConfig()
+        {
+            auto status = Status(0,"OK");
+            status = brokerConnection();
+            if(status.ok())
+            {
+                brokerMessageQuery();
+            }
             return Status(0,"OK");
         }
     
@@ -196,22 +156,26 @@ REGISTER_EXTERNAL(BrokerQueryPlugin, "config", "brokerQuery")
 int main(int argc, char* argv[]) {
     
     std::cout<<"Starting the program"<<std::endl;
-    BrokerQueryPlugin b;
+   /* BrokerQueryPlugin b;
     b.brokerConnection();
-    b.brokerMessageQuery();
+    b.brokerMessageQuery(); */
     
   // Note 4: Start logging, threads, etc.
- /* osquery::Initializer runner(argc, argv, OSQUERY_EXTENSION);
+  osquery::Initializer runner(argc, argv, OSQUERY_EXTENSION);
   std::cout<<"Initialized OSquery"<<std::endl;
+  
   // Note 5: Connect to osqueryi or osqueryd.
-  auto status = startExtension("brokerQuery", "0.0.1");
+ /* auto status = startExtension("brokerQuery", "0.0.1");
   if (!status.ok()) {
     LOG(ERROR) << status.getMessage();
-  }
+  }*/
   
+  BrokerQueryPlugin b;
+  b.genConfig();
+    
   std::cout<<"Shutting downn extension"<<std::endl;
   // Finally shutdown.
-  runner.shutdown();*/
+  runner.shutdown();
   return 0;
 }
 
