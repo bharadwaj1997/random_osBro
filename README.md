@@ -21,7 +21,7 @@ I have used the external builder to build the project. I have used `netbeans` bu
 #### Notes: make sure port 9999 is open (firewall settings). ####
 
  ####Code Working Steps####
- * Broker Connection is established. 
- * Master sends a `SQL` query.
- * Client Receives, processes that query (osqueryd) and finally sends results to master node. (client prints query results locally too.)
- * Master simply prints the received data.
+* Broker Connection is established. 
+* Master sends a `SQL` query.
+* Client Receives, processes that query (osqueryd) and finally sends results to master node. (client prints query results locally too.)
+* Master simply prints the received data.
