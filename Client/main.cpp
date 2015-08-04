@@ -21,6 +21,7 @@
 #include <osquery/logger.h>
 #include <osquery/registry.h>
 #include <osquery/sql.h>
+//#include <pthread.h>
 
 
 
@@ -42,6 +43,7 @@ public:
     //////////////////broker connection/////////////////////////////////////////
     Status brokerConnection()
     {
+        std::cout<<"In the broker Connection\n";
         auto status = Status(0,"OK");
         broker::init();
         PC.peer("192.168.1.187",9999);
@@ -77,6 +79,7 @@ public:
     ////////////////////////////////////////////////////////////////////////////
     Status brokerMessageQuery()
     {
+        std::cout<<"In the Message Query Function\n";
         broker::message_queue mq("Testing", PC);
         pollfd pfd{mq.fd(), POLLIN, 0};      
         int rv;
@@ -134,19 +137,38 @@ public:
         {
             return Status(0,"OK");
         }
-        Status genConfig()
+    //////////////////////////////////////////////////////////////////////
+      /* Status broker_osquery_init()
         {
+            std::cout<<"In the broker_init() function"<<std::endl;
+            //BrokerQueryPlugin b;
             auto status = Status(0,"OK");
             status = brokerConnection();
             if(status.ok())
             {
                 brokerMessageQuery();
             }
+            else
+            {
+                std::cout<<"Could not Connect";
+            }
             return Status(0,"OK");
-        }
+        }*/
     
 };
-
+void *broker_osquery_init(void *threadid)
+{
+    std::cout<<"In the broker_init() function"<<std::endl;
+    BrokerQueryPlugin b;
+    auto status = Status(0,"OK");
+    status = b.brokerConnection();
+    while(!status.ok())
+    {
+        b.brokerConnection();
+    }
+    b.brokerMessageQuery();
+    pthread_exit(NULL);
+}
 
 //////////////////////////////////////////////////
 
@@ -155,27 +177,36 @@ REGISTER_EXTERNAL(BrokerQueryPlugin, "config", "brokerQuery")
 
 int main(int argc, char* argv[]) {
     
+    pthread_t broker_thread;
+    int rc; long t=0;
     std::cout<<"Starting the program"<<std::endl;
-   /* BrokerQueryPlugin b;
-    b.brokerConnection();
-    b.brokerMessageQuery(); */
+    BrokerQueryPlugin b;
+    //b.broker_osquery_init();
+    rc = pthread_create(&broker_thread, NULL, broker_osquery_init, (void*)t);
+    if(rc)
+    {
+        std::cout<< "Error in pthread_create(): " <<rc <<std::endl;
+        exit(-1);                                       
+    }
+   
     
   // Note 4: Start logging, threads, etc.
   osquery::Initializer runner(argc, argv, OSQUERY_EXTENSION);
   std::cout<<"Initialized OSquery"<<std::endl;
   
   // Note 5: Connect to osqueryi or osqueryd.
- /* auto status = startExtension("brokerQuery", "0.0.1");
+  auto status = startExtension("brokerQuery", "0.0.1");
   if (!status.ok()) {
     LOG(ERROR) << status.getMessage();
-  }*/
+  }
   
-  BrokerQueryPlugin b;
-  b.genConfig();
+  /*BrokerQueryPlugin b;
+  b.genConfig();*/
     
   std::cout<<"Shutting downn extension"<<std::endl;
   // Finally shutdown.
   runner.shutdown();
   return 0;
 }
+
 
